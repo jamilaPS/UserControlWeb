@@ -32,52 +32,61 @@ public class UsuarioService extends Application{
 			return Response.status(200).entity(usuarioLogado).build();
 		}
 		else{
-			return Response.status(401).entity("Email ou senha incorretos!").build();
+			return Response.status(200).entity("{\"mensagem\" : \"Email ou senha incorretos!\"}").build();
 		}
 	}
 	
 	@Path("/cadastrar")
 	@POST
 	@Consumes("application/json")
+	@Produces("application/json")
 	public Response cadastrar(Usuario usuario){
 		Armazenamento armazenamento = new Armazenamento();
 		boolean retorno = armazenamento.adicionarUsuario(usuario);
 		if(retorno)
-			return Response.status(200).entity("Usuário cadastrado com sucesso!").build();
+			return Response.status(200).entity("{\"mensagem\" : \"Usuário cadastrado com sucesso!\"}").build();
 		else
-			return Response.status(200).entity("Já existe um usuário com este email, tente entrar ou use outro email.").build();
+			return Response.status(200).entity("{\"mensagem\" : \"Já existe um usuário com este email, tente entrar ou use outro email.\"}").build();
+	}
+	
+	@Path("/buscarTodos")
+	@GET
+	@Produces("application/json")
+	public List<Usuario> buscarTodos(){
+		Armazenamento armazenamento = new Armazenamento();
+		return armazenamento.getUsuarios();
 	}
 	
 	@Path("/buscarNome/{nome}")
 	@GET
-	public Response buscarPorNome(@PathParam("nome") String nome){
+	@Produces("application/json")
+	public List<Usuario> buscarPorNome(@PathParam("nome") String nome){
 		Armazenamento armazenamento = new Armazenamento();
-		List<Usuario> usuarios = armazenamento.encontrarUsuariosPorNome(nome);
-		return Response.status(200).entity(usuarios).build();
+		return armazenamento.encontrarUsuariosPorNome(nome);
 	}
 	
 	@Path("/buscarCpf/{cpf}")
 	@GET
-	public Response buscarPorCpf(@PathParam("cpf") String cpf){
+	@Produces("application/json")
+	public List<Usuario> buscarPorCpf(@PathParam("cpf") String cpf){
 		Armazenamento armazenamento = new Armazenamento();
-		List<Usuario> usuarios = armazenamento.encontrarUsuariosPorCpf(cpf);
-		return Response.status(200).entity(usuarios).build();
+		return armazenamento.encontrarUsuariosPorCpf(cpf);
 	}
 	
 	@Path("/buscarEmail/{email}")
 	@GET
-	public Response buscarPorEmail(@PathParam("email") String email){
+	@Produces("application/json")
+	public List<Usuario> buscarPorEmail(@PathParam("email") String email){
 		Armazenamento armazenamento = new Armazenamento();
-		List<Usuario> usuarios = armazenamento.encontrarUsuariosPorEmail(email);
-		return Response.status(200).entity(usuarios).build();
+		return armazenamento.encontrarUsuariosPorEmail(email);
 	}
 	
 	@Path("/buscarData")
 	@POST
 	@Consumes("application/json")
-	public Response buscarPorData(LocalDate data){
+	@Produces("application/json")
+	public List<Usuario> buscarPorData(LocalDate data){
 		Armazenamento armazenamento = new Armazenamento();
-		List<Usuario> usuarios = armazenamento.encontrarUsuariosPorData(data);
-		return Response.status(200).entity(usuarios).build();
+		return armazenamento.encontrarUsuariosPorData(data);
 	}
 }
