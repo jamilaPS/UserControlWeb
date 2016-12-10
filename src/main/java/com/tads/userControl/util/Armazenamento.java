@@ -14,8 +14,13 @@ import com.tads.userControl.model.Usuario;
 public class Armazenamento {
 	private static List<Usuario> usuarios = new ArrayList<Usuario>();
 
-	public void adicionarUsuario(Usuario usuario){
-		Armazenamento.usuarios.add(usuario);
+	public boolean adicionarUsuario(Usuario usuario){
+		if(!(encontrarUsuariosPorEmail(usuario.getEmail()).size() > 0)){
+			Armazenamento.usuarios.add(usuario);
+			return true;
+		}
+		else
+			return false;
 	}
 	
 	public void limpar(){
@@ -24,6 +29,15 @@ public class Armazenamento {
 	
 	public Integer numeroDeUsuarios(){
 		return usuarios.size();
+	}
+	
+	public Usuario logar(Usuario usuario){
+		List<Usuario> usuariosFiltrados = Armazenamento.usuarios.stream().filter(u -> u.getEmail().equals(usuario.getEmail()))
+				.filter(u -> u.getSenha().equals(usuario.getSenha())).collect(Collectors.toList());
+		if(usuariosFiltrados.size() > 0)
+			return usuariosFiltrados.get(0);
+		else
+			return null; 
 	}
 	
 	public List<Usuario> encontrarUsuariosPorNome(String nomeFiltro){
@@ -38,9 +52,8 @@ public class Armazenamento {
 		return Armazenamento.usuarios.stream().filter(u -> u.getEmail().equals(emailFiltro)).collect(Collectors.toList());
 	}
 	
-	public List<Usuario> encontrarUsuariosPorData(Date data){
-		LocalDate dataFiltro = data.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		return Armazenamento.usuarios.stream().filter(u -> u.getDataNascimento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isEqual(dataFiltro)).collect(Collectors.toList());
+	public List<Usuario> encontrarUsuariosPorData(LocalDate dataFiltro){
+		return Armazenamento.usuarios.stream().filter(u -> u.getDataNascimento().isEqual(dataFiltro)).collect(Collectors.toList());
 	}
 	
 	public List<Usuario> getUsuarios() {

@@ -1,5 +1,6 @@
 package com.tads.userControl.test;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.junit.After;
@@ -35,6 +36,27 @@ public class ArmazenamentoTeste {
 		Integer esperado = 0;
 		Assert.assertEquals(esperado, armazenamento.numeroDeUsuarios());
 	}
+	
+	@Test
+	public void logar(){
+		Usuario u1 = new Usuario();
+		u1.setEmail("joao@mail.com");
+		u1.setSenha("123");
+		armazenamento.adicionarUsuario(u1);
+		
+		Usuario u2 = new Usuario();
+		u2.setEmail("maria@mail.com");
+		u2.setSenha("123");
+		armazenamento.adicionarUsuario(u2);
+		
+		Assert.assertEquals("Não trouxe o usuário correto", u2.getEmail(), armazenamento.logar(u2).getEmail());
+		
+		Usuario u3 = new Usuario();
+		u3.setEmail("teste@mail.com");
+		u3.setSenha("123");
+		
+		Assert.assertEquals(null, armazenamento.logar(u3));
+	}
 
 	@Test
 	public void encontrarUsuariosPorNome(){
@@ -63,7 +85,7 @@ public class ArmazenamentoTeste {
 	@Test
 	public void encontrarUsuariosPorData(){
 		Usuario usuario = new Usuario();
-		usuario.setDataNascimento(new Date());
+		usuario.setDataNascimento(LocalDate.now());
 		armazenamento.adicionarUsuario(usuario);
 		Assert.assertEquals(Integer.valueOf(1), Integer.valueOf(armazenamento.encontrarUsuariosPorData(usuario.getDataNascimento()).size()));
 	}

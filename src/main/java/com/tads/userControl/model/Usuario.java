@@ -1,19 +1,19 @@
 package com.tads.userControl.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Usuario {
 	private String nome;
 	private String cpf;
 	private String email;
 	private String senha;
-	private Date dataNascimento;
+	private LocalDate dataNascimento;
 	
 	public Usuario(){
 		
 	}
 	
-	public Usuario(String nome, String cpf, String email, String senha, Date dataNascimento) {
+	public Usuario(String nome, String cpf, String email, String senha, LocalDate dataNascimento) {
 		super();
 		this.nome = nome;
 		this.cpf = cpf;
@@ -54,11 +54,11 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 	
