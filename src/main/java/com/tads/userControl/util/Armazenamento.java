@@ -18,31 +18,29 @@ public class Armazenamento {
 		Armazenamento.usuarios.add(usuario);
 	}
 	
+	public void limpar(){
+		Armazenamento.usuarios = new ArrayList<Usuario>();
+	}
+	
+	public Integer numeroDeUsuarios(){
+		return usuarios.size();
+	}
+	
 	public List<Usuario> encontrarUsuariosPorNome(String nomeFiltro){
 		return Armazenamento.usuarios.stream().filter(u -> u.getNome().contains(nomeFiltro)).collect(Collectors.toList());
 	}
 	
 	public List<Usuario> encontrarUsuariosPorCpf(String cpfFiltro){
-		return Armazenamento.usuarios.stream().filter(u -> u.getNome().equals(cpfFiltro)).collect(Collectors.toList());
+		return Armazenamento.usuarios.stream().filter(u -> u.getCpf().equals(cpfFiltro)).collect(Collectors.toList());
 	}
 	
 	public List<Usuario> encontrarUsuariosPorEmail(String emailFiltro){
-		return Armazenamento.usuarios.stream().filter(u -> u.getNome().equals(emailFiltro)).collect(Collectors.toList());
+		return Armazenamento.usuarios.stream().filter(u -> u.getEmail().equals(emailFiltro)).collect(Collectors.toList());
 	}
 	
 	public List<Usuario> encontrarUsuariosPorData(Date data){
 		LocalDate dataFiltro = data.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		return Armazenamento.usuarios.stream().filter(u -> u.getDataNascimento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isEqual(dataFiltro)).collect(Collectors.toList());
-	}
-	
-	public List<Usuario> encontrarUsuariosMaioresDeIdade(Date data){
-		LocalDate dataFiltro = data.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		LocalDate hoje = LocalDate.now();
-		return Armazenamento.usuarios.stream().filter(u -> u.getDataNascimento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isEqual(dataFiltro)).collect(Collectors.toList());
-	}
-	
-	public List<Usuario> encontrarUsuariosMenoresDeIdade(Date data){
-		return null;
 	}
 	
 	public List<Usuario> getUsuarios() {
